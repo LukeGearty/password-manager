@@ -1,4 +1,5 @@
 import sqlite3
+from passwords import *
 
 """
 
@@ -47,6 +48,25 @@ def get_db_connection():
     con.execute("PRAGMA foreign_keys = ON")
     return con
 
+
+def register_user(username, password):
+    con = get_db_connection()
+    cur = con.cursor()
+
+    if is_valid_master_password(password): # from passwords.py
+        try:
+            hashed_password = hash_password(password)
+            cur.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username,hashed_password))
+            con.commit()
+            print("User registered successfully")
+        except sqlite3.IntegrityError:
+            print("Username already exists")
+        finally:
+            con.close()
+
+    else:
+        return False
+    
 
 def get_password(website_name):
     con = get_db_connection()
