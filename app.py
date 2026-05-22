@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, session
 from db import *
 import os
 from dotenv import load_dotenv
@@ -33,8 +33,32 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == "GET":
-        return render_template('login.html', name='login') 
+    error = None
+    try:
+        if request.method == "GET":
+            return render_template('login.html', name='login') 
+        elif request.method == "POST":
+            username = request.form["username"]
+            password = request.form["password"]
+
+            if login_user(username, password):
+                print("User logged in successfully")
+
+                session["user"] = username
+
+                return redirect(url_for("dashboard"))
+            else:
+                error = "Invalid username or password"
+                flash("Invalid username or password", "error")
+                return redirect(url_for("login"))
+    except KeyError:
+        return redirect(url_for("login"))
+
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html', name="Dashboard")
+
 
 if __name__=="__main__":
     create_db() # from db.py

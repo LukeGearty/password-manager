@@ -66,7 +66,23 @@ def register_user(username, password):
 
     else:
         return False
-    
+
+
+def login_user(username, password):
+    con = get_db_connection()
+    cur = con.cursor()
+
+    cur.execute('SELECT password FROM users WHERE username = ?', (username,))
+    result = cur.fetchone()
+    con.close()
+
+    if result and check_password(password, result[0]):
+        print('Login Successful')
+        return True
+    else:
+        print("Invalid username")
+        return False
+
 
 def get_password(website_name):
     con = get_db_connection()
