@@ -59,9 +59,26 @@ def login():
 def dashboard():
     if "user" not in session:
         return redirect(url_for("index"))
-    
-    password_objects = get_all_passwords()
     return render_template('dashboard.html', name="Dashboard", user=session["user"])
+
+
+@app.route('/add_password', methods=["GET", "POST"])
+def add_password():
+    if request.method == "GET":
+        return render_template('add_password.html', name="Add Password")
+    elif request.method == "POST":
+        # flow: create password -> encrypt password -> insert into database
+        
+        website_name = request.form["website"]
+        password = create_password()
+
+        encrypted_password = encrypt_password(password)
+
+        insert_password(website_name, encrypted_password)
+        print("Password entered successfully")
+        return redirect(url_for("dashboard"))
+
+
 
 
 if __name__=="__main__":

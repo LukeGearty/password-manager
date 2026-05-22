@@ -78,3 +78,13 @@ def encrypt_password(password):
 
     return encrypted_password
     
+
+def decrypt_password(encrypted_password):
+    key = os.environ.get("ENCRYPTION_KEY")
+    cipher_suite = Fernet(key)
+
+    try:
+        decrypted_password = cipher_suite.decrypt(encrypted_password).decode('utf-8')
+        return decrypted_password
+    except Exception as e:
+        print(f"Decryption failed: {e}")

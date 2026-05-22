@@ -100,7 +100,7 @@ def get_password(website_name):
     cur = con.cursor()
 
     cur.execute("SELECT password FROM passwords WHERE website_name = ?", (website_name,))
-    password = cur.fetchone()
+    password = cur.fetchone()[0]
 
     con.close()
     return password
@@ -110,6 +110,7 @@ def insert_password(website, encrypted_password):
     con = get_db_connection()
     cur = con.cursor()
 
-    cur.execute("INSERT INTO password (website, password) VALUES (?, ?)", (website, encrypted_password))
+    cur.execute("INSERT INTO passwords (website_name, password) VALUES (?, ?)", (website, encrypted_password))
     con.commit()
     con.close()
+
