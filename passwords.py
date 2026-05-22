@@ -1,4 +1,7 @@
 import bcrypt, secrets
+import string
+from cryptography.fernet import Fernet
+import os
 
 
 def hash_password(password):
@@ -43,3 +46,35 @@ def is_valid_master_password(password: str):
             return False
     except TypeError:
         return False
+
+
+def create_password():
+    """
+        Requirements: minimum length should be 12
+        contain one uppercase, one lowercase, one digit, one special character
+
+        Utilizing secrets.choice
+    """
+    special_chars = ['!', '@', '#', '$']
+
+    password = ""
+
+    for _ in range(9):
+        password += secrets.choice(string.ascii_lowercase)
+    
+    password += secrets.choice(string.ascii_uppercase)
+    password += secrets.choice(string.digits)
+    password += secrets.choice(special_chars)
+    return password
+
+
+def encrypt_password(password):
+    key = os.environ.get("ENCRYPTION_KEY")
+    cipher_suite = Fernet(key)
+
+    # encrypt the password
+    new_password = password.encode()
+    encrypted_password = cipher_suite.encrypt(new_password)
+
+    return encrypted_password
+    

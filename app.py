@@ -57,7 +57,11 @@ def login():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html', name="Dashboard")
+    if "user" not in session:
+        return redirect(url_for("index"))
+    
+    password_objects = get_all_passwords()
+    return render_template('dashboard.html', name="Dashboard", user=session["user"])
 
 
 if __name__=="__main__":

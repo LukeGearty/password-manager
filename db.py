@@ -84,6 +84,17 @@ def login_user(username, password):
         return False
 
 
+def get_all_passwords():
+    con = get_db_connection()
+    cur = con.cursor()
+
+    cur.execute('SELECT * FROM passwords')
+    passwords = cur.fetchall()
+    con.close()
+
+    return passwords
+
+
 def get_password(website_name):
     con = get_db_connection()
     cur = con.cursor()
@@ -93,3 +104,12 @@ def get_password(website_name):
 
     con.close()
     return password
+
+
+def insert_password(website, encrypted_password):
+    con = get_db_connection()
+    cur = con.cursor()
+
+    cur.execute("INSERT INTO password (website, password) VALUES (?, ?)", (website, encrypted_password))
+    con.commit()
+    con.close()
