@@ -14,7 +14,8 @@
     {% for key, value in passwords.items() %}
     <tr>
       <td>{{ key }}</td>
-      <td>{{ value }}
+      <td class="password-cell"><span class="password-text">••••••••</span>
+        <button class="toggle-btn" data-password="{{ value }}" data-visible="false">Show</button>
       <button class="copy-btn" data-password="{{ value }}">Copy</button></td>
     </tr>
     {% endfor %}
@@ -39,6 +40,17 @@
                     setTimeout(() => button.textContent = 'Copy', 2000);
                 })
                 .catch(err => console.error('Failed to copy:', err));
+        });
+    });
+
+    const toggleBtns = document.querySelectorAll('.toggle-btn');
+    toggleBtns.forEach(button => {
+        button.addEventListener('click', () => {
+            const span = button.closest('tr').querySelector('.password-text');
+            const visible = button.dataset.visible === 'true';
+            span.textContent = visible ? '••••••••' : button.dataset.password;
+            button.dataset.visible = !visible;
+            button.textContent = visible ? 'Show' : 'Hide';
         });
     });
 
