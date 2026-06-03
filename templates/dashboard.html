@@ -14,7 +14,8 @@
     {% for key, value in passwords.items() %}
     <tr>
       <td>{{ key }}</td>
-      <td>{{ value }}</td>
+      <td>{{ value }}
+      <button class="copy-btn" data-password="{{ value }}">Copy</button></td>
     </tr>
     {% endfor %}
   </tbody>
@@ -24,4 +25,22 @@
 {% endif %}
 
 <a href="/add_password">Add a password</a>
+
+<script>
+    const copyBtns = document.querySelectorAll('.copy-btn');
+
+    copyBtns.forEach(button => {
+        button.addEventListener('click', () => {
+            const password = button.dataset.password;
+            
+            navigator.clipboard.writeText(password)
+                .then(() => {
+                    button.textContent = 'Copied';
+                    setTimeout(() => button.textContet = 'Copy', 2000);
+                })
+                .catch(err => console.error('Failed to copy:', err));
+        });
+    });
+
+</script>
 {% endblock %}
