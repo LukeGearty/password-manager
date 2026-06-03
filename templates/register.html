@@ -3,29 +3,17 @@
 {% block content %}
 <h1>Registration</h1>
 
-<div>
-        <form id="register-form" method="POST">
-            <h2>Register</h2>
-
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-
-            <button type="submit" id="submit-button">Register</button>
-        </form>
-
-    </div>
-    
-
-    <div id="password-feedback">
-        
-    </div>
-
-    <p>Have an account? Login here</p>
-    <a href="/login">Login</a>
+<div class="card">
+  <form id="register-form" method="POST">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required>
+    <button type="submit">Register</button>
+  </form>
+  <div id="password-feedback"></div>
+  <p class="sub-text">Already have an account? <a href="/login">Login here</a></p>
+</div>
 
 
 {% endblock %}
