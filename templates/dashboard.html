@@ -36,7 +36,7 @@
             navigator.clipboard.writeText(password)
                 .then(() => {
                     button.textContent = 'Copied';
-                    setTimeout(() => button.textContet = 'Copy', 2000);
+                    setTimeout(() => button.textContent = 'Copy', 2000);
                 })
                 .catch(err => console.error('Failed to copy:', err));
         });
