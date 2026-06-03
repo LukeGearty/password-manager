@@ -1,7 +1,27 @@
 {% extends 'layout.html' %}
-
 {% block content %}
-    <h1>Dashboard of {{ user }}</h1>
+<h1>Dashboard of {{ user }}</h1>
 
-    <a href="/add_password">Add a password</a>
+{% if passwords %}
+<table>
+  <thead>
+    <tr>
+      <th>Website</th>
+      <th>Password</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key, value in passwords.items() %}
+    <tr>
+      <td>{{ key }}</td>
+      <td>{{ value }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No passwords saved yet.</p>
+{% endif %}
+
+<a href="/add_password">Add a password</a>
 {% endblock %}

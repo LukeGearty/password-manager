@@ -59,7 +59,16 @@ def login():
 def dashboard():
     if "user" not in session:
         return redirect(url_for("index"))
-    return render_template('dashboard.html', name="Dashboard", user=session["user"])
+    
+    db_passwords = get_all_passwords()
+    # get them into a dictionary where the key is website and value is the decrypted password
+
+    passwords = {}
+
+    for password in db_passwords:
+        passwords[password[1]] = decrypt_password(password[2])
+    # print(passwords)
+    return render_template('dashboard.html', name="Dashboard", user=session["user"], passwords=passwords)
 
 
 @app.route('/add_password', methods=["GET", "POST"])
